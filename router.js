@@ -1,6 +1,9 @@
 import { Router } from 'express';
+import { upload, uploadFile } from './upload.js';
 
 const router = Router();
+
+router.post('/upload', upload.single('file'), uploadFile);
 
 router.get('/users', (req, res) => {
   return res.status(200).json({
