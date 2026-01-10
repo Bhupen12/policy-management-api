@@ -1,12 +1,7 @@
 import { PolicyModel, UserModel } from "./models/index.js";
 
 export const findPoliciesByUsername = async (username) => {
-  const user = await UserModel.findOne({
-    $or: [
-      { email: username },
-      { firstName: username }
-    ]
-  });
+  const user = await UserModel.findOne({ email: username });
 
   if (!user) {
     return null;

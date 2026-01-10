@@ -11,7 +11,7 @@ export const searchPolicies = async (req, res) => {
     const policies = await findPoliciesByUsername(username);
 
     if (!policies) {
-      return res.status(404).json({ error: 'Policies not found' });
+      return res.status(404).json({ error: 'User not found' });
     }
 
     return res.status(200).json({ policies });
