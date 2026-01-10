@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const AgentSchema = new Schema({
   name:
@@ -8,4 +8,4 @@ const AgentSchema = new Schema({
   },
 })
 
-export default AgentSchema;
+export default mongoose.models.Agent || mongoose.model('Agent', AgentSchema);

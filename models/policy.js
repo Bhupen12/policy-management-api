@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const PolicySchema = new Schema({
   policyNumber: String,
@@ -18,3 +18,5 @@ const PolicySchema = new Schema({
     ref: 'Career',
   },
 })
+
+export default mongoose.models.Policy || mongoose.model('Policy', PolicySchema);

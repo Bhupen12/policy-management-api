@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const AccountSchema = new Schema({
   name: String,
@@ -8,4 +8,4 @@ const AccountSchema = new Schema({
   },
 })
 
-export default AccountSchema;
+export default mongoose.models.Account || mongoose.model('Account', AccountSchema);

@@ -1,7 +1,7 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const CareerSchema = new Schema({
   name: String,
 })
 
-export default CareerSchema;
+export default mongoose.models.Career || mongoose.model('Career', CareerSchema);
