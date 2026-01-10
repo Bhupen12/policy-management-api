@@ -1,6 +1,6 @@
 export { default as AccountModel } from './account.js'
 export { default as AgentModel } from './agent.js'
 export { default as CareerModel } from './career.js'
-export { default as LOBModel } from './lob.js'
+export { default as CategoryModel } from './category.js'
 export { default as PolicyModel } from './policy.js'
 export { default as UserModel } from './user.js'
