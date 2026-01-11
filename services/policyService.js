@@ -1,4 +1,4 @@
-import { PolicyModel, UserModel } from "./models/index.js";
+import { PolicyModel, UserModel } from "../models/index.js";
 
 export const findPoliciesByUsername = async (username) => {
   const user = await UserModel.findOne({ email: username });
