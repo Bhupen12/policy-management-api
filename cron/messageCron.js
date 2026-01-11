@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { ScheduledMessageModel, MessageModel } from "../models/index.js";
+import { processScheduledMessages } from "../services/messageService";
 
 export const startMessageCron = () => {
   cron.schedule("*/30 * * * * *", async () => {
