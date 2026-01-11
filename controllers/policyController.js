@@ -1,4 +1,4 @@
-import { findPoliciesByUsername } from "../services/policyService.js";
+import { aggregatePoliciesByUser, findPoliciesByUsername } from "../services/policyService.js";
 
 export const searchPolicies = async (req, res) => {
   try {
@@ -17,6 +17,16 @@ export const searchPolicies = async (req, res) => {
     return res.status(200).json({ policies });
   } catch (error) {
     console.error('Error searching policies:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export const getAggregatePoliciesByUser = async (req, res) => {
+  try {
+    const aggregationResult = await aggregatePoliciesByUser();
+    return res.status(200).json({ data: aggregationResult });
+  } catch (error) {
+    console.error('Error aggregating policies by user:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
