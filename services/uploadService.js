@@ -1,13 +1,9 @@
-import xlsx from 'xlsx';
 import { AccountModel, AgentModel, CategoryModel, CompanyModel, PolicyModel, UserModel } from '../models/index.js';
 
-export const processUpload = async (fileBuffer) => {
-  const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
-  const sheetName = workbook.SheetNames[0];
-  const sheet = workbook.Sheets[sheetName];
-  const rows = xlsx.utils.sheet_to_json(sheet);
-
+export const saveRows = async (rows) => {
+  let cnt = rows.length;
   for (const row of rows) {
+    --cnt;
     // Agent 
     let agent = await AgentModel.findOne({ name: row.agent });
     if (!agent) {
@@ -73,4 +69,4 @@ export const processUpload = async (fileBuffer) => {
       }
     }
   }
-};
+}
