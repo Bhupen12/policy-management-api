@@ -22,6 +22,10 @@ function getCpuUsage() {
 
     previousCpuInfo = currentCpuInfo;
 
+    if (!totalTickDiff) {
+        return 0;
+    }
+
     const cpuUsage = 100 - (totalIdleDiff / totalTickDiff) * 100;
     return cpuUsage;
 }
