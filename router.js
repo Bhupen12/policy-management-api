@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { upload, uploadFile } from './upload.js';
+import { upload, uploadFile } from "./controllers/uploadController.js";
 import { searchPolicies } from './policyController.js';
 
 const router = Router();
