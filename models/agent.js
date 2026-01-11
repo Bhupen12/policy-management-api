@@ -5,7 +5,8 @@ const AgentSchema = new Schema({
   {
     type: String,
     required: true,
+    index: true,
   },
-})
+}, { timestamps: true });
 
 export default mongoose.models.Agent || mongoose.model('Agent', AgentSchema);
