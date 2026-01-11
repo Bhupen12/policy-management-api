@@ -1,72 +1,87 @@
-import { AccountModel, AgentModel, CategoryModel, CompanyModel, PolicyModel, UserModel } from '../models/index.js';
+import { AccountModel, AgentModel, CarrierModel, PolicyCategoryModel, PolicyModel, UserModel } from '../models/index.js';
+
+const excelDateToJS = (value) => {
+  if (typeof value === 'number') {
+    return new Date(Math.round((value - 25569) * 86400 * 1000));
+  }
+  return value ? new Date(value) : null;
+};
 
 export const saveRows = async (rows) => {
-  let cnt = rows.length;
   for (const row of rows) {
-    --cnt;
-    // Agent 
-    let agent = await AgentModel.findOne({ name: row.agent });
-    if (!agent) {
-      agent = new AgentModel({ name: row.agent });
-      await agent.save();
-    }
+    const agent = row.agent
+      ? await AgentModel.findOneAndUpdate(
+        { name: row.agent },
+        { $setOnInsert: { name: row.agent } },
+        { upsert: true, new: true }
+      )
+      : null;
 
-    // User
-    let user = await UserModel.findOne({ email: row.email });
-    if (!user) {
-      user = new UserModel({
-        firstName: row.firstname,
-        dob: typeof row.dob === 'number' ? new Date(row.dob) : row.dob,
-        address: row.address,
-        phone: row.phone,
-        state: row.state,
-        zip: row.zip,
-        email: row.email,
-        gender: row.gender,
-        userType: row.userType
-      });
-      await user.save();
-    }
+    const user = row.email
+      ? await UserModel.findOneAndUpdate(
+        { email: row.email },
+        {
+          $setOnInsert: {
+            firstName: row.firstname,
+            dob: excelDateToJS(row.dob),
+            address: row.address,
+            phone: row.phone,
+            state: row.state,
+            zip: row.zip,
+            email: row.email,
+            gender: row.gender,
+            userType: row.userType
+          }
+        },
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      )
+      : null;
 
-    // Account
-    let account = await AccountModel.findOne({ name: row.account_name });
-    if (!account) {
-      account = new AccountModel({
-        name: row.account_name,
-        user: user._id
-      });
-      await account.save();
-    }
+    const category = row.category_name
+      ? await PolicyCategoryModel.findOneAndUpdate(
+        { name: row.category_name },
+        { $setOnInsert: { name: row.category_name } },
+        { upsert: true, new: true }
+      )
+      : null;
 
-    // Lob
-    let category = await CategoryModel.findOne({ name: row.category_name });
-    if (!category) {
-      category = new CategoryModel({ name: row.category_name });
-      await category.save();
-    }
+    const carrier = row.company_name
+      ? await CarrierModel.findOneAndUpdate(
+        { name: row.company_name },
+        { $setOnInsert: { name: row.company_name } },
+        { upsert: true, new: true }
+      )
+      : null;
 
-    // Company
-    let company = await CompanyModel.findOne({ name: row.company_name });
-    if (!company) {
-      company = new CompanyModel({ name: row.company_name });
-      await company.save();
-    }
+    const account = row.account_name && user
+      ? await AccountModel.findOneAndUpdate(
+        { name: row.account_name, user: user._id },
+        { $setOnInsert: {
+          name: row.account_name,
+          user: user._id
+        } },
+        { upsert: true, new: true }
+      )
+      : null;
 
     // Policy
-    if (row.policy_number) {
-      let policy = await PolicyModel.findOne({ policyNumber: row.policy_number });
-      if (!policy) {
-        const policyData = {
-          policyNumber: row.policy_number,
-          startDate: typeof row.policy_start_date === 'number' ? new Date(row.policy_start_date) : row.policy_start_date,
-          endDate: typeof row.policy_end_date === 'number' ? new Date(row.policy_end_date) : row.policy_end_date,
-          user: user._id,
-          category: category._id,
-          company: company._id
-        }
-        policy = new PolicyModel(policyData);
-        await policy.save();
-      }
+    if (row.policy_number && user) {
+      await PolicyModel.findOneAndUpdate(
+        { policyNumber: row.policy_number },
+        {
+          $setOnInsert: {
+            policyNumber: row.policy_number,
+            startDate: excelDateToJS(row.policy_start_date),
+            endDate: excelDateToJS(row.policy_end_date),
+            user: user._id,
+            category: category?._id,
+            carrier: carrier?._id,
+            agent: agent?._id,
+            account: account?._id,
+          }
+        },
+        { upsert: true, new: true }
+      );
     }
   }
 }

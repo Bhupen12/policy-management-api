@@ -143,14 +143,43 @@ Schedule a message to be sent at a specific day and time.
 
 ---
 
-## 🏗️ MongoDB Collections Used
+## 🏗️ MongoDB Collections
 
--   `Agent`
--   `User`
--   `Account`
--   `Policy Category (LOB)`
--   `Policy Carrier (Company)`
--   `Policy`
+-   **`Agent`**: Stores insurance agents.
+-   **`User`**: Actual customer / policy holder.
+-   **`Account`**: User’s account (business / personal).
+-   **`PolicyCategory (LOB)`**: Line of Business (e.g., Commercial Auto, Health).
+-   **`Carrier (Company)`**: The insurance company.
+-   **`Policy`**: Actual policy information, linking all other collections.
+
+---
+
+## 🧬 Data Model
+
+```text
+Agent
+ └── has many Policies
+
+User
+ └── has one Account
+ └── has many Policies
+
+Account
+ └── belongs to one User
+
+PolicyCategory (LOB)
+ └── has many Policies
+
+Carrier
+ └── has many Policies
+
+Policy
+ └── belongs to User
+ └── belongs to Agent
+ └── belongs to Account
+ └── belongs to PolicyCategory
+ └── belongs to Carrier
+```
 
 ---
 

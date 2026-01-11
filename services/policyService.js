@@ -3,17 +3,14 @@ import { PolicyModel, UserModel } from "../models/index.js";
 export const findPoliciesByUsername = async (username) => {
   const user = await UserModel.findOne({ email: username });
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return [];
 
-  const policies = await PolicyModel.find({ user: user._id })
-    .populate('category')
-    .populate('company')
-    .populate('user');
+  return PolicyModel.find({ user: user._id })
+    .populate('category', 'name')
+    .populate('carrier', 'name')
+    .populate('user', 'firstName email');
+};
 
-  return policies;
-}
 
 export const aggregatePoliciesByUser = async () => {
   const today = new Date();
@@ -25,7 +22,16 @@ export const aggregatePoliciesByUser = async () => {
         totalPolicies: { $sum: 1 },
         activePolicies: {
           $sum: {
-            $cond: [{ $gte: ["$endDate", today] }, 1, 0]
+            $cond: [
+              {
+                $and: [
+                  { $lte: ["$startDate", today] },
+                  { $gte: ["$endDate", today] }
+                ]
+              },
+              1,
+              0
+            ]
           }
         },
         expiredPolicies: {
