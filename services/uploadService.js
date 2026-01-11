@@ -46,7 +46,7 @@ export const saveRows = async (rows) => {
     }
 
     // Company
-    let company = await CompanyModel.findOne({ name: row.producer });
+    let company = await CompanyModel.findOne({ name: row.company_name });
     if (!company) {
       company = new CompanyModel({ name: row.company_name });
       await company.save();
