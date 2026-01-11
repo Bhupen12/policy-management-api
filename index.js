@@ -1,3 +1,5 @@
+import './cpuWatcher.js';
+
 import dotenv from "dotenv";
 dotenv.config();
 
