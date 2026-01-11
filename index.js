@@ -1,4 +1,4 @@
-import './cpuWatcher.js';
+import { startMonitoring } from './cpuWatcher.js';
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -22,6 +22,7 @@ async function startApp() {
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    startMonitoring();
   });
 }
 
