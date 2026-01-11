@@ -49,6 +49,9 @@ const uploadFile = async (req, res) => {
     });
 
     if (!msg || !msg.success) {
+      if (worker) {
+        await worker.terminate().catch(() => { });
+      }
       const err = msg && msg.error ? msg.error : 'Unknown error';
       return res.status(500).json({
         success: false,
@@ -73,11 +76,10 @@ const uploadFile = async (req, res) => {
     res.status(500).json(
       {
         success: false,
-        error: error.message ?? String(err),
+        error: error.message ?? String(error),
       }
     );
   }
 };
 
 export { upload, uploadFile };
-

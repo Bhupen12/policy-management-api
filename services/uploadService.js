@@ -1,4 +1,3 @@
-import xlsx from 'xlsx';
 import { AccountModel, AgentModel, CategoryModel, CompanyModel, PolicyModel, UserModel } from '../models/index.js';
 
 export const saveRows = async (rows) => {
@@ -71,12 +70,3 @@ export const saveRows = async (rows) => {
     }
   }
 }
-
-export const processUpload = async (fileBuffer) => {
-  const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
-  const sheetName = workbook.SheetNames[0];
-  const sheet = workbook.Sheets[sheetName];
-  const rows = xlsx.utils.sheet_to_json(sheet);
-  await saveRows(rows);
-  return true;
-};
