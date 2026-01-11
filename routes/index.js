@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import policyRoutes from "./policyRoutes.js";
+import messageRoutes from "./messageRoutes.js";
 
 const router = Router();
 
@@ -10,6 +11,8 @@ router.get('/users', (req, res) => {
 });
 
 router.use('/policies', policyRoutes);
+
+router.use('/message', messageRoutes)
 
 
 export default router;
