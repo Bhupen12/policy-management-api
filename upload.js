@@ -1,6 +1,6 @@
 import multer from 'multer';
 import xlsx from 'xlsx';
-import { AccountModel, AgentModel, CareerModel, CategoryModel, PolicyModel, UserModel } from './models/index.js';
+import { AccountModel, AgentModel, CompanyModel, CategoryModel, PolicyModel, UserModel } from './models/index.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -56,11 +56,11 @@ const uploadFile = async (req, res) => {
       await category.save();
     }
 
-    // Career
-    let career = await CareerModel.findOne({ name: row.producer });
-    if (!career) {
-      career = new CareerModel({ name: row.company_name });
-      await career.save();
+    // Company
+    let company = await CompanyModel.findOne({ name: row.producer });
+    if (!company) {
+      company = new CompanyModel({ name: row.company_name });
+      await company.save();
     }
 
     // Policy
@@ -73,7 +73,7 @@ const uploadFile = async (req, res) => {
           endDate: typeof row.policy_end_date === 'number' ? new Date(row.policy_end_date) : row.policy_end_date,
           user: user._id,
           category: category._id,
-          career: career._id
+          company: company._id
         }
         policy = new PolicyModel(policyData);
         await policy.save();

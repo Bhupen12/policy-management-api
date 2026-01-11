@@ -9,7 +9,7 @@ export const findPoliciesByUsername = async (username) => {
 
   const policies = await PolicyModel.find({ user: user._id })
     .populate('category')
-    .populate('career')
+    .populate('company')
     .populate('user');
 
   return policies;

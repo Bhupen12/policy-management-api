@@ -13,9 +13,9 @@ const PolicySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Category',
   },
-  career: {
+  company: {
     type: Schema.Types.ObjectId,
-    ref: 'Career',
+    ref: 'Company',
   },
 })
 
