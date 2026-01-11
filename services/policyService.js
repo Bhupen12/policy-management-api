@@ -1,4 +1,4 @@
-import { PolicyModel, UserModel } from "./models/index.js";
+import { PolicyModel, UserModel } from "../models/index.js";
 
 export const findPoliciesByUsername = async (username) => {
   const user = await UserModel.findOne({ email: username });
@@ -9,7 +9,7 @@ export const findPoliciesByUsername = async (username) => {
 
   const policies = await PolicyModel.find({ user: user._id })
     .populate('category')
-    .populate('career')
+    .populate('company')
     .populate('user');
 
   return policies;

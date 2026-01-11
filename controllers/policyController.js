@@ -1,4 +1,4 @@
-import { findPoliciesByUsername } from "./policyService.js";
+import { findPoliciesByUsername } from "../services/policyService.js";
 
 export const searchPolicies = async (req, res) => {
   try {
