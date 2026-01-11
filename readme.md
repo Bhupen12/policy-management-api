@@ -156,7 +156,7 @@ Schedule a message to be sent at a specific day and time.
 
 ## 🧬 Data Model
 
-```
+```text
 Agent
  └── has many Policies
 

@@ -65,7 +65,7 @@ export const saveRows = async (rows) => {
       : null;
 
     // Policy
-    if (row.policy_number) {
+    if (row.policy_number && user) {
       await PolicyModel.findOneAndUpdate(
         { policyNumber: row.policy_number },
         {
@@ -73,7 +73,7 @@ export const saveRows = async (rows) => {
             policyNumber: row.policy_number,
             startDate: excelDateToJS(row.policy_start_date),
             endDate: excelDateToJS(row.policy_end_date),
-            user: user?._id,
+            user: user._id,
             category: category?._id,
             carrier: carrier?._id,
             agent: agent?._id,
