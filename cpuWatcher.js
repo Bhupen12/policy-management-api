@@ -1,11 +1,8 @@
 import os from 'os';
 
-const CPU_LIMIT = 70;
-
 let previousCpuInfo = os.cpus();
-let monitoringInterval = null;
 
-function getCpuUsage() {
+export function getCpuUsage() {
     const currentCpuInfo = os.cpus();
     let totalIdleDiff = 0;
     let totalTickDiff = 0;
@@ -30,26 +27,3 @@ function getCpuUsage() {
     const cpuUsage = 100 - (totalIdleDiff / totalTickDiff) * 100;
     return cpuUsage;
 }
-
-function startMonitoring() {
-    if (monitoringInterval) return;
-
-    monitoringInterval = setInterval(() => {
-        const cpuUsage = getCpuUsage();
-        console.log(`CPU Usage: ${cpuUsage}%`);
-        if (cpuUsage > CPU_LIMIT) {
-            console.warn(`Warning: CPU usage is above ${CPU_LIMIT}%!`);
-            process.exit(1);
-        }
-    }, 5000);
-}
-
-function stopMonitoring() {
-    if (monitoringInterval) {
-        clearInterval(monitoringInterval);
-        monitoringInterval = null;
-    }
-}
-
-export { startMonitoring, stopMonitoring };
-export default getCpuUsage;

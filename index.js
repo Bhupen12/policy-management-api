@@ -1,29 +1,29 @@
-import { startMonitoring } from './cpuWatcher.js';
+import cluster from 'cluster';
+import { getCpuUsage } from './cpuWatcher.js';
+import { startApp } from './app.js';
 
-import dotenv from "dotenv";
-dotenv.config();
+const CPU_LIMIT = Number(process.env.CPU_LIMIT) || 70;
 
-import express from "express";
-import { connectDB } from "./config/database.js"
-import router from "./routes/index.js";
+if (cluster.isPrimary) {
+  console.log(`Master ${process.pid} running`);
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+  cluster.fork();
 
-async function startApp() {
-  await connectDB();
-
-  app.use(express.json());
-
-  app.get("/", (req, res) => {
-    res.send("Hello, World!");
+  cluster.on('exit', (worker) => {
+    console.log(`Worker ${worker.process.pid} died. Restarting...`);
+    cluster.fork();
   });
-  app.use("/api", router)
 
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    startMonitoring();
-  });
+} else {
+  await startApp();
+
+  setInterval(() => {
+    const cpuUsage = getCpuUsage();
+    console.log(`CPU Usage: ${cpuUsage}% (PID ${process.pid})`);
+
+    if (cpuUsage >= CPU_LIMIT) {
+      console.log(`CPU crossed ${CPU_LIMIT}%. Restarting worker...`);
+      process.exit(1);
+    }
+  }, 5000);
 }
-
-startApp();
