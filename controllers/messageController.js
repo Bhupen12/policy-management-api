@@ -1,6 +1,6 @@
 import { scheduleMessage } from "../services/messageService.js";
 
-export const postScheduledMessage = async (req, res) => {
+export const  scheduleMessageController = async (req, res) => {
   try {
     const { message, day, time } = req.body;
 

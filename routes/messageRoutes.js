@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { postScheduledMessage } from '../controllers/messageController.js';
+import {  scheduleMessageController } from '../controllers/messageController.js';
 
 const router = Router();
 
-router.post('/schedule', postScheduledMessage);
+router.post('/schedule',  scheduleMessageController);
 
 export default router;

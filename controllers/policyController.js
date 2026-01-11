@@ -1,6 +1,6 @@
 import { aggregatePoliciesByUser, findPoliciesByUsername } from "../services/policyService.js";
 
-export const searchPolicies = async (req, res) => {
+export const  handlePolicySearch = async (req, res) => {
   try {
     const { username } = req.query;
 
@@ -21,7 +21,7 @@ export const searchPolicies = async (req, res) => {
   }
 }
 
-export const getAggregatePoliciesByUser = async (req, res) => {
+export const  handlePolicyAggregation = async (req, res) => {
   try {
     const aggregationResult = await aggregatePoliciesByUser();
     return res.status(200).json({ data: aggregationResult });
