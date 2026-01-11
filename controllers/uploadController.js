@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-const uploadFile = async (req, res) => {
+const  handleUpload = async (req, res) => {
   if (!req.file || !req.file.buffer) {
     return res.status(400).send('No file uploaded.');
   }
@@ -82,4 +82,4 @@ const uploadFile = async (req, res) => {
   }
 };
 
-export { upload, uploadFile };
+export { upload,  handleUpload };
